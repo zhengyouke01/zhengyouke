@@ -1,0 +1,2 @@
+# zhengouke
+common function

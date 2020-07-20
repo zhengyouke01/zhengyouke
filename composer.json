@@ -1,0 +1,35 @@
+{
+    "name": "zhengyouke/zhengyouke",
+    "type": "library",
+    "description": "zyk common function and extend class.",
+    "homepage": "https://github.com/htxjie/zhengouke",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "zyk",
+            "email": "631372587@qq.com",
+            "homepage": "http://www.zhengyouke.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "qiniu/php-sdk" : "*",
+        "monolog/monolog" : "*",
+        "elasticsearch/elasticsearch": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload-dev": {
+        "psr-4": { "zyk\\tests\\": "tests/" }
+    },
+    "autoload" : {
+        "psr-4": {
+            "zhengyouke\\": "src/zyk/"
+        },
+        "files": [
+            "src/zyk/function.php"
+        ]
+    }
+}
