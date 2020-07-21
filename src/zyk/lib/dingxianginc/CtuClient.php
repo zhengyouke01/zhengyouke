@@ -1,15 +1,15 @@
 <?php
+namespace zyk\lib\dingxainginc;
+
+use zyk\lib\dingxainginc\model\CaptchaResponse;
+use zyk\lib\dingxainginc\model\CtuResponse;
+use zyk\lib\dingxainginc\util\SignUtil;
 /**
  * Created by PhpStorm.
  * User: dingxiang-inc
  * Date: 2017/8/19
  * Time: 下午1:29
  */
-
-
-include ("./model/CtuRequest.php");
-include ("./model/CtuResponse.php");
-include ("./util/SignUtil.php");
 
 class CtuClient
 {

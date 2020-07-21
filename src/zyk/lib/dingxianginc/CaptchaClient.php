@@ -1,5 +1,7 @@
 <?php
+declare(strict_types = 1);
 namespace zyk\lib\dingxainginc;
+use zyk\lib\dingxainginc\model\CaptchaResponse;
 
 /**
  * Created by PhpStorm.
@@ -7,7 +9,6 @@ namespace zyk\lib\dingxainginc;
  * Date: 2017/8/24
  * Time: 21:05
  */
-require_once ("./model/CaptchaResponse.php");
 
 class CaptchaClient
 {
@@ -17,24 +18,24 @@ class CaptchaClient
     private $captchaResponse;
     private $timeout = 2;
 
-    function __construct($appId, $appSecret)
+    function __construct(string $appId, string $appSecret)
     {
         $this->appId = $appId;
         $this->appSecret = $appSecret;
     }
 
-    public function setTimeOut($timeout) {
+    public function setTimeOut(int $timeout) {
         if ($timeout < 0) {
             # code...
             return;
         }
         $this->timeout = $timeout;
     }
-    public function setCaptchaUrl($captchaUrl) {
+    public function setCaptchaUrl(string $captchaUrl) {
         $this->captchaUrl = $captchaUrl;
     }
 
-    public function verifyToken($token)
+    public function verifyToken(string $token)
     {
         $captchaResponse = new CaptchaResponse(false, "");
 

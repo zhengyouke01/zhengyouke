@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+namespace zyk\func;
 /**
  * 第三方扩展需要集成的方法
  */
@@ -9,7 +11,7 @@
  * @param $data
  * @return bool|string
  */
-function zyk_https_post($url , $data) {
+function zyk_https_post(string $url , array $data) {
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
@@ -36,7 +38,7 @@ function zyk_https_post($url , $data) {
  * @param array $data
  * @return bool|string
  */
-function zyk_https_get($url, $data = []) {
+function zyk_https_get(string $url, array $data = []) {
     if (!empty($data)) {
         $url = $url . '?' . http_build_query($data);
     }
@@ -68,7 +70,7 @@ function zyk_https_get($url, $data = []) {
  *
  * @return bool|string
  */
-function zyk_check_card_no($cardNo) {
+function zyk_check_card_no(string $cardNo) {
     $n = 0;
     $ns = strrev($cardNo); // 倒序
     for ($i=0; $i <strlen($cardNo) ; $i++) {
@@ -121,14 +123,12 @@ function zyk_check_card_no($cardNo) {
  * @access  public
  * @return  string
  */
-function real_ip()
-{
+function zyk_real_ip() {
     static $realip = NULL;
 
     if ($realip !== NULL) {
         return $realip;
     }
-
     if (isset($_SERVER)) {
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $arr = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
@@ -164,20 +164,4 @@ function real_ip()
     $realip = !empty($onlineip[0]) ? $onlineip[0] : '0.0.0.0';
 
     return $realip;
-}
-
-/**
- * redis扩展
- * @param $config 配置文件扩展
- */
-function zyk_redis($config = array()) {
-    $dbId = 0;
-    if (!empty($config['db_id'])) {
-        $dbId = $config['db_id'];
-    }
-    try {
-        return \zyk\tools\Redis::getInstance($config, $dbId);
-    } catch (\ErrorException $e) {
-        throw new \ErrorException('redis连接异常');
-    }
 }

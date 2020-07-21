@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace zyk\tools;
 
 use Monolog\Formatter\LineFormatter;
@@ -10,14 +11,14 @@ class Monolog implements BaseInterface {
     private static $logPath = '../log/';
     private static $instance = [];
 
-    public function __construct($option = []) {
+    public function __construct(array $option = []) {
         self::$logPath = $option['monolog_path'] ?? self::$logPath;
     }
 
     /**
      * @param array $option
      */
-    public static function getInstance($option = []) {
+    public static function getInstance(array $option = []) {
         self::$logPath = $option['monolog_path'] ?? self::$logPath;
         $k = md5(self::$logPath);
         if( !isset(static::$instance[$k]) || !(static::$instance[$k] instanceof self)) {
@@ -41,7 +42,7 @@ class Monolog implements BaseInterface {
      * @param string $params
      * @param string $module
      */
-    public function info($name, $msg, $ip, $params = [], $module = '') {
+    public function info(string $name, string $msg, string $ip, array $params = [], string $module = '') {
         $this->setLog($name)->info(self::processMsg($msg, $ip, $params, $module));
     }
 
@@ -55,7 +56,7 @@ class Monolog implements BaseInterface {
      * @param string $params
      * @param string $module
      */
-    public function warning($name, $msg, $ip, $params = [], $module = '') {
+    public function warning(string $name, string $msg, string $ip, array $params = [], string $module = '') {
         $this->setLog($name)->warning(self::processMsg($msg, $ip, $params, $module));
     }
 
@@ -69,7 +70,7 @@ class Monolog implements BaseInterface {
      * @param string $params
      * @param string $module
      */
-    public function error($name, $msg, $ip, $params = [], $module = '') {
+    public function error(string $name, string $msg, string $ip, array $params = [], string $module = '') {
         $this->setLog($name)->error(self::processMsg($msg, $ip, $params, $module));
     }
 
@@ -84,7 +85,7 @@ class Monolog implements BaseInterface {
      * @param string $module
      * @return string
      */
-    static public function processMsg($msg, $ip, $params = [], $module = '') {
+    static public function processMsg(string $msg, string $ip, array $params = [], string $module = '') {
         $module = empty($module)?"[]":"[$module]";
         $ip = empty($ip)?"[]":$ip;
         $paramStr = '';
@@ -107,7 +108,7 @@ class Monolog implements BaseInterface {
      * @param $name
      * @return bool|Logger
      */
-    public function setLog($name, $module = '') {
+    public function setLog(string $name, string $module = '') {
         $logger = new Logger($name);
         if (!is_dir(static::$logPath)) {
             if (mkdir(static::$logPath, 0777, true) === false) {

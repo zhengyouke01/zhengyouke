@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace zyk\tools;
 use zyk\tools\BaseInterface;
 
@@ -9,7 +10,7 @@ class HYSms implements BaseInterface {
     protected static $instance;
 
 
-    private function __construct($option) {
+    private function __construct(array $option = []) {
         $this->account = $option['account'] ?? '';       //用户账号
         $this->password = $option['password'] ?? '';     //密码
         $this->target = $option['target'] ?? '';       //提交地址
@@ -23,7 +24,7 @@ class HYSms implements BaseInterface {
      * @param array $options
      * @return static
      */
-    public static function instance($options = []) {
+    public static function instance(array $options = []) {
         if (is_null(self::$instance)) {
             self::$instance = new static($options);
         }
@@ -43,7 +44,7 @@ class HYSms implements BaseInterface {
      * @param string $content 短信内容
      * @return mixed
      */
-    public function sendSMS($mobile, $content){
+    public function sendSMS(string $mobile, string $content){
         $target = $this->target;
         $msg = $content;
         try {
@@ -70,7 +71,7 @@ class HYSms implements BaseInterface {
 
     }
 
-    public function Post($curlPost, $url) {
+    public function Post(string $curlPost, string $url) {
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_HEADER, false);
@@ -83,7 +84,7 @@ class HYSms implements BaseInterface {
             return $return_str;
     }
 
-    public function xml_to_array($xml) {
+    public function xml_to_array(string $xml) {
         $reg = "/<(\w+)[^>]*>([\\x00-\\xFF]*)<\\/\\1>/";
         if(preg_match_all($reg, $xml, $matches)){
             $count = count($matches[0]);
@@ -101,7 +102,7 @@ class HYSms implements BaseInterface {
     }
 
     /*获取随机数函数*/
-    public function mc_random($length, $char_str = 'abcdefghijklmnopqrstuvwxyz0123456789'){
+    public function mc_random(int $length, string $char_str = 'abcdefghijklmnopqrstuvwxyz0123456789'){
         $hash = '';
         $chars = $char_str;
         $max = strlen($chars);
@@ -120,7 +121,7 @@ class HYSms implements BaseInterface {
     }
 
     /*记录短信内容*/
-    public function log_sms($mobile,$content,$type = 0){
+    public function log_sms(string $mobile, string $content, int $type = 0){
         $getip  =  real_ip();
         $data = array(
                 'mobile'                  => $mobile,

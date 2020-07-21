@@ -1,4 +1,6 @@
 <?php
+namespace zyk\lib\dingxainginc\model;
+
 class CaptchaResponse
 {
     public $result;             // 调用结果

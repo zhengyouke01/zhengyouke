@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+namespace zyk\func;
 
 /**
  * 使用盐值加密
@@ -6,7 +8,7 @@
  * @param $salt
  * @return string
  */
-function zyk_encrypt($str, $salt = ''){
+function zyk_encrypt(string $str, string $salt = ''){
     return md5(md5($salt).$str);
 }
 
@@ -16,7 +18,7 @@ function zyk_encrypt($str, $salt = ''){
  * @param string $char_str
  * @return string
  */
-function zyk_create_random($length, $char_str = 'abcdefghijklmnopqrstuvwxyz0123456789') {
+function zyk_create_random(int $length, string $char_str = 'abcdefghijklmnopqrstuvwxyz0123456789') {
     $hash = '';
     $chars = $char_str;
     $max = strlen($chars);
@@ -58,7 +60,7 @@ function zyk_randomkeys() {
  *
  * @return string
  */
-function zyk_create_invite_code($uid) {
+function zyk_create_invite_code(int $uid) {
     $len = 8; // 34str位下，至少保证6位，不会出现混乱的情况(id超过15亿也会出现混乱，在六位的基础上）
     $str = 'HK1M2N3TGQPR4WCUA5ZJE6BIV7YF8LS9DX';
     $expStr = 'O';
@@ -86,7 +88,7 @@ function zyk_create_invite_code($uid) {
  * @param $length
  * @return string
  */
-function zyk_get_substr($string, $start, $length) {
+function zyk_get_substr(string $string, int $start, int $length) {
     if (mb_strlen($string,'utf-8') > $length) {
         $str = mb_substr($string, $start, $length,'utf-8');
         return $str.'...';
@@ -105,7 +107,7 @@ function zyk_get_substr($string, $start, $length) {
  * @param string $suffix 截断显示字符
  * @return string
  */
-function zyk_msubstr($str, $start, $length, $charset = "utf-8", $suffix = true) {
+function zyk_msubstr(string $str, int $start, int $length, string $charset = "utf-8", bool $suffix = true) {
     if (function_exists("mb_substr"))
         $slice = mb_substr($str, $start, $length, $charset);
     elseif (function_exists('iconv_substr')) {
@@ -129,7 +131,7 @@ function zyk_msubstr($str, $start, $length, $charset = "utf-8", $suffix = true) 
  * @param $mobile
  * @return mixed
  */
-function zyk_mobile_hide($mobile) {
+function zyk_mobile_hide(string $mobile) {
     return substr_replace($mobile,'****',3,4);
 }
 
@@ -138,7 +140,7 @@ function zyk_mobile_hide($mobile) {
  * @param string $name 姓名
  * @return string 格式化后的姓名
  */
-function zyk_substr_cut($name) {
+function zyk_substr_cut(string $name) {
     $strlen = mb_strlen($name, 'utf-8');
     $firstStr = mb_substr($name, 0, 1, 'utf-8');
     $lastStr = mb_substr($name, -1, 1, 'utf-8');
@@ -150,7 +152,7 @@ function zyk_substr_cut($name) {
  * @param $number
  * @return bool|string
  */
-function zyk_upper_number($number) {
+function zyk_upper_number(int $number) {
     if (!is_numeric($number)) return false;
     $numfont = array('0' => '零', '1' => '一', '2' => '二', '3' => '三', '4' => '四', '5' => '五', '6' => '六', '7' => '七', '8' => '八', '9' => '九');
     $upper = '';

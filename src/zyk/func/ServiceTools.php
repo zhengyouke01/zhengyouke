@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+namespace zyk\func;
 
 /**
  * 校验字符表情
@@ -6,7 +8,7 @@
  * @param string $str
  * @return bool
  */
-function zyk_check_emoji($str) {
+function zyk_check_emoji(string $str) {
     $mat = [];
     preg_match_all('/./u', $str,$mat);
     foreach ($mat[0] as $v){
@@ -22,7 +24,7 @@ function zyk_check_emoji($str) {
  * @param $mobile
  * @return bool
  */
-function zyk_check_number($mobile) {
+function zyk_check_number(string $mobile) {
     if(preg_match('/^[0-9]*$/',$mobile))
         return true;
     return false;
@@ -33,7 +35,7 @@ function zyk_check_number($mobile) {
  * @param $mobile
  * @return bool
  */
-function zyk_check_telephone($mobile) {
+function zyk_check_telephone(string $mobile) {
     if(preg_match('/^([0-9]{3,4}-)?[0-9]{7,8}$/',$mobile))
         return true;
     return false;
@@ -44,7 +46,7 @@ function zyk_check_telephone($mobile) {
  * @param $email
  * @return bool
  */
-function zyk_check_email($email) {
+function zyk_check_email(string $email) {
     if(filter_var($email,FILTER_VALIDATE_EMAIL))
         return true;
     return false;
@@ -56,7 +58,7 @@ function zyk_check_email($email) {
  * @param $mobile 需要判断的手机号
  * @return bool
  */
-function zyk_check_mobile($mobile) {
+function zyk_check_mobile(string $mobile) {
     if(preg_match('/1[23456789]\d{9}$/',$mobile))
         return true;
     return false;

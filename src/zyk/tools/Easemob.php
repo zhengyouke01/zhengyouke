@@ -1,5 +1,8 @@
 <?php
+declare(strict_types = 1);
 namespace zyk\tools;
+
+use mysql_xdevapi\XSession;
 
 class Easemob  implements BaseInterface {
 
@@ -19,7 +22,7 @@ class Easemob  implements BaseInterface {
 	 * @param $options['org_name']
 	 * @param $options['app_name']
 	 */
-	public function __construct($options) {
+	public function __construct(array $options = []) {
 		$this->client_id = $options ['client_id'] ?? '';
 		$this->client_secret = $options ['client_secret'] ?? '';
 		$this->org_name = $options ['org_name'] ?? '';
@@ -39,7 +42,7 @@ class Easemob  implements BaseInterface {
      * @param array $options 参数
      * @return \think\Request
      */
-    public static function instance($options = []) {
+    public static function instance(array $options = []) {
         if (is_null(self::$instance)) {
             self::$instance = new static($options);
         }
@@ -72,7 +75,7 @@ class Easemob  implements BaseInterface {
      * @param string $nickname 用户昵称
      * @return mixed
      */
-    public function createUser($username, $password, $nickname=''){
+    public function createUser(string $username, string $password, string $nickname=''){
 		$url = $this->url.'users';
 		$options = array(
 			"username"=>$username,
@@ -89,7 +92,7 @@ class Easemob  implements BaseInterface {
 	/*
 		批量注册用户
 	*/
-    public function createUsers($options){
+    public function createUsers(string $options){
 		$url=$this->url.'users';
 
 		$body=json_encode($options);
@@ -100,7 +103,7 @@ class Easemob  implements BaseInterface {
 	/*
 	 * 重置用户密码
 	*/
-    public function resetPassword($username,$newpassword){
+    public function resetPassword(string $username, string $newpassword){
 		$url=$this->url.'users/'.$username.'/password';
 		$options=array(
 			"newpassword"=>$newpassword
@@ -114,7 +117,7 @@ class Easemob  implements BaseInterface {
 	/*
 	 *获取单个用户
 	*/
-    public function getUser($username){
+    public function getUser(string $username){
 		$url=$this->url.'users/'.$username;
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header,"GET");
@@ -123,7 +126,7 @@ class Easemob  implements BaseInterface {
 	/*
 		获取批量用户----不分页
 	*/
-    public function getUsers($limit=0){
+    public function getUsers(int $limit=0){
 		if(!empty($limit)){
 			$url=$this->url.'users?limit='.$limit;
 		}else{
@@ -136,7 +139,7 @@ class Easemob  implements BaseInterface {
 	/*
 		获取批量用户---分页
 	*/
-    public function getUsersForPage($limit=0,$cursor=''){
+    public function getUsersForPage(int $limit=0, string $cursor=''){
 		$url=$this->url.'users?limit='.$limit.'&cursor='.$cursor;
 
 		$header=array($this->getToken());
@@ -150,14 +153,14 @@ class Easemob  implements BaseInterface {
 	}
 
 	//创建文件夹
-    public function mkdirs($dir, $mode = 0777)
+    public function mkdirs(string $dir, int $mode = 0777)
 	 {
 		 if (is_dir($dir) || @mkdir($dir, $mode)) return TRUE;
 		 if (!mkdirs(dirname($dir), $mode)) return FALSE;
 		 return @mkdir($dir, $mode);
 	 }
 	 //写入cursor
-    public function writeCursor($filename,$content){
+    public function writeCursor(string $filename, string $content){
 		//判断文件夹是否存在，不存在的话创建
 		if(!file_exists("resource/txtfile")){
 			mkdirs("resource/txtfile");
@@ -167,7 +170,7 @@ class Easemob  implements BaseInterface {
 		fclose($myfile);
 	}
 	 //读取cursor
-    public function readCursor($filename){
+    public function readCursor(string $filename){
 		//判断文件夹是否存在，不存在的话创建
 		if(!file_exists("resource/txtfile")){
 			mkdirs("resource/txtfile");
@@ -186,7 +189,7 @@ class Easemob  implements BaseInterface {
 	/*
 		删除单个用户
 	*/
-    public function deleteUser($username){
+    public function deleteUser(string $username){
 		$url=$this->url.'users/'.$username;
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header,'DELETE');
@@ -197,7 +200,7 @@ class Easemob  implements BaseInterface {
 		limit:建议在100-500之间，、
 		注：具体删除哪些并没有指定, 可以在返回值中查看。
 	*/
-    public function deleteUsers($limit){
+    public function deleteUsers(int $limit){
 		$url=$this->url.'users?limit='.$limit;
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header,'DELETE');
@@ -207,7 +210,7 @@ class Easemob  implements BaseInterface {
 	/*
 	*修改用户昵称
 	*/
-    public function editNickname($username,$nickname){
+    public function editNickname(string $username, string $nickname){
 		$url=$this->url.'users/'.$username;
 		$options=array(
 			"nickname"=>$nickname
@@ -220,7 +223,7 @@ class Easemob  implements BaseInterface {
 	/*
 		添加好友-
 	*/
-    public function addFriend($username,$friend_name){
+    public function addFriend(string $username, string $friend_name){
 		$url=$this->url.'users/'.$username.'/contacts/users/'.$friend_name;
 		$header=array($this->getToken(),'Content-Type:application/json');
 		$result=$this->postCurl($url,'',$header,'POST');
@@ -233,7 +236,7 @@ class Easemob  implements BaseInterface {
 	/*
 		删除好友
 	*/
-    public function deleteFriend($username,$friend_name){
+    public function deleteFriend(string $username, string $friend_name){
 		$url=$this->url.'users/'.$username.'/contacts/users/'.$friend_name;
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header,'DELETE');
@@ -243,7 +246,7 @@ class Easemob  implements BaseInterface {
 	/*
 		查看好友
 	*/
-    public function showFriends($username){
+    public function showFriends(string $username){
 		$url=$this->url.'users/'.$username.'/contacts/users';
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header,'GET');
@@ -253,7 +256,7 @@ class Easemob  implements BaseInterface {
 	/*
 		查看用户黑名单
 	*/
-    public function getBlacklist($username){
+    public function getBlacklist(string $username){
 		$url=$this->url.'users/'.$username.'/blocks/users';
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header,'GET');
@@ -263,7 +266,7 @@ class Easemob  implements BaseInterface {
 	/*
 		往黑名单中加人
 	*/
-    public function addUserForBlacklist($username,$usernames){
+    public function addUserForBlacklist(string $username, string $usernames){
 		$url=$this->url.'users/'.$username.'/blocks/users';
 		$body=json_encode($usernames);
 		$header=array($this->getToken());
@@ -274,7 +277,7 @@ class Easemob  implements BaseInterface {
 	/*
 		从黑名单中减人
 	*/
-    public function deleteUserFromBlacklist($username,$blocked_name){
+    public function deleteUserFromBlacklist(string $username, string $blocked_name){
 		$url=$this->url.'users/'.$username.'/blocks/users/'.$blocked_name;
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header,'DELETE');
@@ -284,7 +287,7 @@ class Easemob  implements BaseInterface {
 	 /*
 		查看用户是否在线
 	 */
-    public function isOnline($username){
+    public function isOnline(string $username){
 		$url=$this->url.'users/'.$username.'/status';
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header,'GET');
@@ -294,7 +297,7 @@ class Easemob  implements BaseInterface {
 	/*
 		查看用户离线消息数
 	*/
-    public function getOfflineMessages($username){
+    public function getOfflineMessages(string $username){
 		$url=$this->url.'users/'.$username.'/offline_msg_count';
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header,'GET');
@@ -305,7 +308,7 @@ class Easemob  implements BaseInterface {
 		查看某条消息的离线状态
 		----deliverd 表示此用户的该条离线消息已经收到
 	*/
-    public function getOfflineMessageStatus($username,$msg_id){
+    public function getOfflineMessageStatus(string $username, int $msg_id){
 		$url=$this->url.'users/'.$username.'/offline_msg_status/'.$msg_id;
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header,'GET');
@@ -315,7 +318,7 @@ class Easemob  implements BaseInterface {
 	/*
 		禁用用户账号
 	*/
-    public function deactiveUser($username){
+    public function deactiveUser(string $username){
 		$url=$this->url.'users/'.$username.'/deactivate';
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header);
@@ -324,7 +327,7 @@ class Easemob  implements BaseInterface {
 	/*
 		解禁用户账号
 	*/
-    public function activeUser($username){
+    public function activeUser(string $username){
 		$url=$this->url.'users/'.$username.'/activate';
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header);
@@ -334,7 +337,7 @@ class Easemob  implements BaseInterface {
 	/*
 		强制用户下线
 	*/
-    public function disconnectUser($username){
+    public function disconnectUser(string $username){
 		$url=$this->url.'users/'.$username.'/disconnect';
 		$header=array($this->getToken());
 		$result=$this->postCurl($url,'',$header,'GET');
@@ -344,7 +347,7 @@ class Easemob  implements BaseInterface {
 	/*
 		上传图片或文件
 	*/
-    public function uploadFile($filePath){
+    public function uploadFile(string $filePath){
 		$url=$this->url.'chatfiles';
 		$file=file_get_contents($filePath);
 		$body['file']=$file;
@@ -356,7 +359,7 @@ class Easemob  implements BaseInterface {
 	/*
 		下载文件或图片
 	*/
-    public function downloadFile($uuid,$shareSecret,$ext)
+    public function downloadFile(string $uuid, string $shareSecret, array $ext)
 	{
 		$url = $this->url . 'chatfiles/' . $uuid;
 		$header = array("share-secret:" . $shareSecret, "Accept:application/octet-stream", $this->getToken(),);
@@ -378,7 +381,7 @@ class Easemob  implements BaseInterface {
 
 	}
 
-    public function getFile($url){
+    public function getFile(string $url){
 		set_time_limit(0); // unlimited max execution time
 
 		$ch = curl_init($url);
@@ -392,7 +395,7 @@ class Easemob  implements BaseInterface {
 	/*
 		下载图片缩略图
 	*/
-    public function downloadThumbnail($uuid,$shareSecret){
+    public function downloadThumbnail(string $uuid, string $shareSecret){
 		$url=$this->url.'chatfiles/'.$uuid;
 		$header = array("share-secret:".$shareSecret,"Accept:application/octet-stream",$this->getToken(),"thumbnail:true");
 		$result=$this->postCurl($url,'',$header,'GET');
@@ -414,7 +417,7 @@ class Easemob  implements BaseInterface {
 	/*
 		发送文本消息
 	*/
-    public function sendText($from="admin",$target_type,$target,$content,$ext){
+    public function sendText(string $from="admin", string $target_type, string $target, string $content, array $ext){
 		$url=$this->url.'messages';
 		$body['target_type']=$target_type;
 		$body['target']=$target;

@@ -1,4 +1,5 @@
 <?php
+namespace zyk\lib\dingxainginc\model;
 /**
  * Created by PhpStorm.
  * User: dingxiang-inc

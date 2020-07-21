@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types = 1);
 
 namespace zyk\tools;
 
@@ -20,7 +20,7 @@ class ALiApi implements BaseInterface {
      * @param $cardNo
      * @return bool
      */
-    public static function checkCardNo($cardNo) {
+    public static function checkCardNo(string $cardNo) {
         $data = [
             '_input_charset' => 'utf-8',
             'cardNo' => $cardNo,

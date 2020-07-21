@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+namespace zyk\func;
 
 /**
  * 数组分页
@@ -7,7 +9,7 @@
  * @param $pageSize
  * @return array
  */
-function zyk_paging_data($data, $page, $pageSize) {
+function zyk_paging_data(array $data, int $page, int $pageSize) {
     $total = count($data);
     $pageCount = ceil($total / $pageSize);
     $start = ($page-1) * $pageSize;
@@ -30,7 +32,7 @@ function zyk_paging_data($data, $page, $pageSize) {
  *
  * @return array
  */
-function zyk_page_slice($arr, $size, $field, $last = '') {
+function zyk_page_slice(array $arr, int $size, string $field, string $last = '') {
     if (!empty($last)) {
         $index = array_search($last, array_column($arr, $field));
     } else {
@@ -50,7 +52,7 @@ function zyk_page_slice($arr, $size, $field, $last = '') {
  * @param $array
  * @return array
  */
-function zyk_multi2array($array) {
+function zyk_multi2array(array $array) {
     static $result_array = array();
     foreach ($array as $key => $value) {
         if (is_array($value)) {
@@ -70,7 +72,7 @@ function zyk_multi2array($array) {
  * @param bool $ndformat
  * @return mixed
  */
-function zyk_unique_arr($array2D, $stkeep=false, $ndformat=true) {
+function zyk_unique_arr(array $array2D, bool $stkeep=false, bool $ndformat=true) {
     // 判断是否保留一级数组键 (一级数组键可以为非数字)
     if($stkeep) $stArr = array_keys($array2D);
     // 判断是否保留二级数组键 (所有二级数组键必须相同)
@@ -103,7 +105,7 @@ function zyk_unique_arr($array2D, $stkeep=false, $ndformat=true) {
  * @param $key
  * @return mixed
  */
-function zyk_arr_delete_col($array, $key) {
+function zyk_arr_delete_col(array $array, string $key) {
     array_walk($array, function (&$v) use ($key) {
         unset($v[$key]);
     });
@@ -116,7 +118,7 @@ function zyk_arr_delete_col($array, $key) {
  * @param $key_name
  * @return mixed
  */
-function zyk_array_key_change($arr, $key_name) {
+function zyk_array_key_change(array $arr, string $key_name) {
     return array_reduce($arr,function(&$newArray,$v) use ($key_name) {
         $newArray[$v[$key_name]] = $v;
         return $newArray;
@@ -129,7 +131,7 @@ function zyk_array_key_change($arr, $key_name) {
  * @param $fields array 需要的字段
  * @return mixed
  */
-function zyk_filter_array_fields($array, $fields) {
+function zyk_filter_array_fields(array $array, string $fields) {
     foreach ($array as $key => $value) {
         if (!in_array($key, $fields)) {
             unset($array[$key]);
@@ -145,7 +147,7 @@ function zyk_filter_array_fields($array, $fields) {
  * @param string $type
  * @return array
  */
-function zyk_array_sort($arr, $keys, $type = 'desc') {
+function zyk_array_sort(array $arr, string $keys, string $type = 'desc') {
 
     $key_value = $new_array = array();
     foreach ($arr as $k => $v) {
@@ -169,7 +171,7 @@ function zyk_array_sort($arr, $keys, $type = 'desc') {
  * @param string $key_name  列名
  * @return array 返回那一列的数组
  */
-function zyk_get_arr_column($arr, $key_name) {
+function zyk_get_arr_column(array $arr, string $key_name) {
     $arr2 = array();
     foreach($arr as $key => $val){
         $arr2[] = $val[$key_name];

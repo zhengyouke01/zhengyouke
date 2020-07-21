@@ -14,22 +14,20 @@
     ],
     "require": {
         "php": ">=7.0",
-        "qiniu/php-sdk" : "*",
-        "monolog/monolog" : "*",
-        "elasticsearch/elasticsearch": "*"
+        "qiniu/php-sdk": "^7.2",
+        "monolog/monolog": "^2.1",
+        "elasticsearch/elasticsearch": "^6.7"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
     },
     "autoload-dev": {
         "psr-4": { "zyk\\tests\\": "tests/" }
+
     },
     "autoload" : {
         "psr-4": {
             "zyk\\": "src/zyk/"
-        },
-        "files": [
-            "src/zyk/function.php"
-        ]
+        }
     }
 }

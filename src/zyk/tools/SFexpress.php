@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace zyk\tools;
 
 class SFexpress implements BaseInterface {
@@ -13,14 +14,14 @@ class SFexpress implements BaseInterface {
 
     public static $finish_code = '80';
 
-    private function __construct($options = []) {
+    private function __construct(array $options = []) {
         self::$checkword = $options['check_word'] ?? '';
         $this->business_number = $options['business_number'] ?? '';
     }
 
-    public static function getInstance() {
+    public static function getInstance(array $option = []) {
         if (is_null(self::$_instance)) {
-            self::$_instance = new self();
+            self::$_instance = new self($option);
         }
         return self::$_instance;
     }
@@ -36,7 +37,7 @@ class SFexpress implements BaseInterface {
      * @param $post_data
      * @return bool|string
      */
-    public function sendPost($url, $post_data) {
+    public function sendPost(string $url, array $post_data) {
         $postdata = http_build_query($post_data);
         $options = array(
             'http' => array(
@@ -57,7 +58,7 @@ class SFexpress implements BaseInterface {
      * @param $sf_no
      * @return bool|mixed
      */
-    public function SFRoute($sf_no) {
+    public function SFRoute(string $sf_no) {
         return $this->queryPostRoute($sf_no);
     }
 
@@ -66,7 +67,7 @@ class SFexpress implements BaseInterface {
      * @param $sf_nos
      * @return array|bool
      */
-    public function SFRouteBatch($sf_nos) {
+    public function SFRouteBatch(string $sf_nos) {
         $order_nno_route = [];
         $query_list = [];
         foreach ($sf_nos as $no) {
@@ -82,7 +83,7 @@ class SFexpress implements BaseInterface {
      * @param $order_nos
      * @return array|bool
      */
-    public function BatchQueryPostRoute($order_nos) {
+    public function BatchQueryPostRoute(array $order_nos) {
         $order_no_str = implode(',',$order_nos);
         $xmlContent = "<Request service='RouteService' lang='zh-CN'><Head>".$this->business_number."</Head><Body><RouteRequest tracking_type='1' method_type='1' tracking_number='{$order_no_str}'/></Body></Request>";
         $post_data = array(
@@ -99,7 +100,7 @@ class SFexpress implements BaseInterface {
      * @return bool
      *
      */
-    public function queryPostRoute($sf_no) {
+    public function queryPostRoute(string $sf_no) {
         $xmlContent = "<Request service='RouteService' lang='zh-CN'><Head>".$this->business_number."</Head><Body><RouteRequest tracking_type='1' method_type='1' tracking_number='{$sf_no}'/></Body></Request>";
         $post_data = array(
             'xml' => $xmlContent,
@@ -114,7 +115,7 @@ class SFexpress implements BaseInterface {
      * @param $resultCont
      * @return array|bool
      */
-    public function SFres_batch($resultCont) {
+    public function SFres_batch(string $resultCont) {
         $res_arr = $this->processXmlRes($resultCont);
         if ($res_arr && !empty($res_arr['Response']) && !empty($res_arr['Response']['Head'])) {
             if ($res_arr['Response']['Head'] == 'OK') {
@@ -155,7 +156,7 @@ class SFexpress implements BaseInterface {
         string(2) "54"
      *
      */
-    public function SFres($resultCont) {
+    public function SFres(string $resultCont) {
         $res_arr = $this->processXmlRes($resultCont);
         if ($res_arr && !empty($res_arr['Response']) && !empty($res_arr['Response']['Head'])) {
             //  正常数据返回
@@ -181,7 +182,7 @@ class SFexpress implements BaseInterface {
      * @param bool $recursive
      * @return array|mixed
      */
-    protected function processXmlRes($resultCont, $recursive = false) {
+    protected function processXmlRes(string $resultCont, bool $recursive = false) {
         $doc = new \DOMDocument("1.0", 'utf-8');
         $doc->loadXML ($resultCont);
         $result = $this->domNodeToArray($doc);
@@ -256,7 +257,7 @@ class SFexpress implements BaseInterface {
      * @param $xmlContent
      * @return string
      */
-    protected function verifyCode($xmlContent) {
+    protected function verifyCode(string $xmlContent) {
         return  base64_encode(md5(($xmlContent . self::$checkword), TRUE));
     }
 

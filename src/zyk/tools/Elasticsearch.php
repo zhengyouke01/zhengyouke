@@ -1,6 +1,5 @@
 <?php
 
-
 namespace zyk\tools;
 
 
@@ -31,7 +30,7 @@ class Elasticsearch extends ServiceBase implements BaseInterface {
      * @param array $data 更新内容
      * @return array
      */
-    public function indexDoc($index, $id, $data = []) {
+    public function indexDoc(string $index, string $id, array $data = []) {
 
         $params = [
             'index' => $index,
@@ -52,7 +51,7 @@ class Elasticsearch extends ServiceBase implements BaseInterface {
      * @param $id 文档ID
      * @return array
      */
-    public function deleteDoc($index, $id) {
+    public function deleteDoc(string $index, string $id) {
 
         $params = [
             'index' => $index,
@@ -72,7 +71,7 @@ class Elasticsearch extends ServiceBase implements BaseInterface {
      * @param array $data
      * @return array
      */
-    public function deleteByQuery($index, $data = []) {
+    public function deleteByQuery(string $index, array $data = []) {
         $params = [
             'index' => $index,
             'type' => '_doc',
@@ -92,7 +91,7 @@ class Elasticsearch extends ServiceBase implements BaseInterface {
      * @param $data
      * @return array
      */
-    public function search($index = [], $data) {
+    public function search(array $index = [], array $data) {
 
         $params = [
             'index' => $index,
