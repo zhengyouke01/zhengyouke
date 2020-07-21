@@ -7,6 +7,26 @@ use Monolog\Logger;
 
 class Monolog implements BaseInterface {
 
+    private static $logPath = '../log/';
+    private static $instance = [];
+
+    public function __construct($option = []) {
+        self::$logPath = $option['monolog_path'] ?? self::$logPath;
+    }
+
+    /**
+     * @param array $option
+     */
+    public static function getInstance($option = []) {
+        self::$logPath = $option['monolog_path'] ?? self::$logPath;
+        $k = md5(self::$logPath);
+        if( !isset(static::$instance[$k]) || !(static::$instance[$k] instanceof self)) {
+            static::$instance[$k] = new self($option);
+            static::$instance[$k]->k = $k;
+        }
+        return static::$instance[$k];
+    }
+
     public function serviceInfo() {
         return ['service_name' => 'Mongolog记录类', 'service_class' => 'Monolog', 'service_describe' => 'Mongolog记录类', 'author' => 'wxw', 'version' => '1.0'];
     }
@@ -21,8 +41,8 @@ class Monolog implements BaseInterface {
      * @param string $params
      * @param string $module
      */
-    static public function info($name, $msg, $ip, $params = [], $module = '') {
-        self::setLog($name)->info(self::processMsg($msg, $ip, $params, $module));
+    public function info($name, $msg, $ip, $params = [], $module = '') {
+        $this->setLog($name)->info(self::processMsg($msg, $ip, $params, $module));
     }
 
     /**
@@ -35,8 +55,8 @@ class Monolog implements BaseInterface {
      * @param string $params
      * @param string $module
      */
-    static public function warning($name, $msg, $ip, $params = [], $module = '') {
-        self::setLog($name)->warning(self::processMsg($msg, $ip, $params, $module));
+    public function warning($name, $msg, $ip, $params = [], $module = '') {
+        $this->setLog($name)->warning(self::processMsg($msg, $ip, $params, $module));
     }
 
     /**
@@ -49,8 +69,8 @@ class Monolog implements BaseInterface {
      * @param string $params
      * @param string $module
      */
-    static public function error($name, $msg, $ip, $params = [], $module = '') {
-        self::setLog($name)->error(self::processMsg($msg, $ip, $params, $module));
+    public function error($name, $msg, $ip, $params = [], $module = '') {
+        $this->setLog($name)->error(self::processMsg($msg, $ip, $params, $module));
     }
 
 
@@ -87,11 +107,10 @@ class Monolog implements BaseInterface {
      * @param $name
      * @return bool|Logger
      */
-    static public function setLog($name, $module = '') {
+    public function setLog($name, $module = '') {
         $logger = new Logger($name);
-        $logPath = config('monolog_path');
-        if (!is_dir($logPath)) {
-            if (mkdir($logPath, 0777, true) === false) {
+        if (!is_dir(static::$logPath)) {
+            if (mkdir(static::$logPath, 0777, true) === false) {
                 return false;
             }
         }
@@ -104,7 +123,7 @@ class Monolog implements BaseInterface {
                 $module = 'default';
             }
         }
-        $logFileName = $logPath.$module.DIRECTORY_SEPARATOR.$name.'.log';
+        $logFileName = static::$logPath.$module.DIRECTORY_SEPARATOR.$name.'.log';
         $handler = new StreamHandler($logFileName, Logger::INFO);
         // 自定义格式
         $output = "[%datetime%]\t%level_name%\t%message%\t%context%\t%extra%\n";

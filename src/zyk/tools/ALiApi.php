@@ -4,9 +4,14 @@
 namespace zyk\tools;
 
 
-class ALiApi {
+class ALiApi implements BaseInterface {
 
     protected static $aliBankValiUrl = 'https://ccdcapi.alipay.com/validateAndCacheCardInfo.json';
+
+
+    public function serviceInfo() {
+        return ['service_name' => '验证银行卡号', 'service_class' => 'ALiApi', 'service_describe' => '验证银行卡号', 'author' => 'zyk', 'version' => '1.0'];
+    }
 
     /**
      * 验证银行卡合法性（BIN码）
@@ -21,7 +26,7 @@ class ALiApi {
             'cardNo' => $cardNo,
             'cardBinCheck' => 'true'
         ];
-        $res = https_get(self::$aliBankValiUrl , $data);
+        $res = zyk_https_get(self::$aliBankValiUrl , $data);
         $res = json_decode($res, true);
         if (empty($res)) {
             return false;

@@ -1,7 +1,7 @@
 <?php
 namespace zyk\tools;
 
-class SFexpress {
+class SFexpress implements BaseInterface {
 
     private static $_instance = NULL;
     private static $checkword;//密钥
@@ -23,6 +23,11 @@ class SFexpress {
             self::$_instance = new self();
         }
         return self::$_instance;
+    }
+
+
+    public function serviceInfo() {
+        return ['service_name' => '顺丰快递查询类', 'service_class' => 'SFexpress', 'service_describe' => '顺丰快递查询操作', 'author' => 'WXW', 'version' => '1.0'];
     }
 
     /**

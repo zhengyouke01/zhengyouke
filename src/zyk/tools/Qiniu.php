@@ -10,7 +10,7 @@ use Qiniu\Http\Client;
 use Qiniu\Storage\BucketManager;
 use Qiniu\Storage\UploadManager;
 
-class Qiniu extends ServiceBase implements BaseInterface {
+class Qiniu implements BaseInterface {
 
 
 

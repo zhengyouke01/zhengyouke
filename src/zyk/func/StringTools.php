@@ -7,9 +7,6 @@
  * @return string
  */
 function zyk_encrypt($str, $salt = ''){
-    if (empty($salt)) {
-        $salt = config("AUTH_CODE");
-    }
     return md5(md5($salt).$str);
 }
 

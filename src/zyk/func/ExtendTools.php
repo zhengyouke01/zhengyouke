@@ -171,13 +171,12 @@ function real_ip()
  * @param $config 配置文件扩展
  */
 function zyk_redis($config = array()) {
-    $config = array_merge($config, config('redis'));
-    $db_id = 0;
+    $dbId = 0;
     if (!empty($config['db_id'])) {
-        $db_id = $config['db_id'];
+        $dbId = $config['db_id'];
     }
     try {
-        return \zyk\tools\Redis::getInstance($config, $db_id);
+        return \zyk\tools\Redis::getInstance($config, $dbId);
     } catch (\ErrorException $e) {
         throw new \ErrorException('redis连接异常');
     }

@@ -1,5 +1,5 @@
 <?php
-namespace zyk\tools\dingxainginc;
+namespace zyk\lib\dingxainginc;
 
 /**
  * Created by PhpStorm.

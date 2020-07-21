@@ -11,8 +11,8 @@
 
 namespace zyk\tools;
 
-class Redis
-{
+class Redis implements BaseInterface {
+
     private $redis;
     protected $dbId=0;
     protected $auth;
@@ -47,6 +47,10 @@ class Redis
             $this->auth    =    $config['password'];
         }
         $this->expireTime    =    time() + $this->attr['timeout'];
+    }
+
+    public function serviceInfo() {
+        return ['service_name' => 'redis操作封装', 'service_class' => 'Redis', 'service_describe' => 'Redis操作处理类', 'author' => 'zyk', 'version' => '1.0'];
     }
 
     /**

@@ -1,7 +1,8 @@
 <?php
 namespace zyk\tools;
 
-class Easemob {
+class Easemob  implements BaseInterface {
+
 	private $client_id;
 	private $client_secret;
 	private $org_name;
@@ -27,6 +28,10 @@ class Easemob {
 			$this->url = 'https://a1.easemob.com/' . $this->org_name . '/' . $this->app_name . '/';
 		}
 	}
+
+    public function serviceInfo() {
+        return ['service_name' => '环信操作类', 'service_class' => 'Easemob', 'service_describe' => '环信操作', 'author' => 'LYJ', 'version' => '1.0'];
+    }
 
     /**
      * 初始化
