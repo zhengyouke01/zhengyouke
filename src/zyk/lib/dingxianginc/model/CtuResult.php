@@ -5,8 +5,8 @@
  * Date: 2017/8/19
  * Time: 下午1:01
  */
-namespace zyk\lib\dingxainginc\model;
-use zyk\lib\dingxainginc\model\RiskLevel;
+namespace zyk\lib\dingxianginc\model;
+use zyk\lib\dingxianginc\model\RiskLevel;
 
 class CtuResult
 {

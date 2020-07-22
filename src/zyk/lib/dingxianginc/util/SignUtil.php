@@ -1,5 +1,5 @@
 <?php
-namespace zyk\lib\dingxainginc\util;
+namespace zyk\lib\dingxianginc\util;
 /**
  * Created by PhpStorm.
  * User: dingxiang-inc

@@ -1,5 +1,5 @@
 <?php
-namespace zyk\lib\dingxainginc\model;
+namespace zyk\lib\dingxianginc\model;
 
 class CaptchaResponse
 {

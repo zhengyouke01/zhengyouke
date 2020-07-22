@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
-namespace zyk\lib\dingxainginc;
-use zyk\lib\dingxainginc\model\CaptchaResponse;
+namespace zyk\lib\dingxianginc;
+use zyk\lib\dingxianginc\model\CaptchaResponse;
 
 /**
  * Created by PhpStorm.
