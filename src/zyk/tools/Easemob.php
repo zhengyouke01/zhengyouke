@@ -153,7 +153,7 @@ class Easemob  implements BaseInterface {
 	}
 
 	//创建文件夹
-    public function mkdirs(string $dir, int $mode = 0777)
+    public function mkdirs($dir, $mode = 0777)
 	 {
 		 if (is_dir($dir) || @mkdir($dir, $mode)) return TRUE;
 		 if (!mkdirs(dirname($dir), $mode)) return FALSE;
